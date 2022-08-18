@@ -17,12 +17,11 @@ public class EchoServer {
     }
 
     public void run() {
-        try(var server = new ServerSocket(port)){
-            try(var clientSocket = server.accept()){
+        try (ServerSocket server = new ServerSocket(port)) {
+            try (Socket clientSocket = server.accept()) {
                 handle(clientSocket);
             }
-        }
-        catch (IOException e) {
+        } catch (IOException e) {
             System.out.printf("Port %s is probably busy.\n", port);
             e.printStackTrace();
         }
@@ -32,17 +31,23 @@ public class EchoServer {
         InputStream input = socket.getInputStream();
         InputStreamReader isr = new InputStreamReader(input, "UTF-8");
 
-        try(Scanner sc = new Scanner(isr)) {
+        try (Scanner sc = new Scanner(isr); PrintWriter pw = new PrintWriter(socket.getOutputStream())) {
             while (true) {
-                String message = sc.nextLine().strip();
-                System.out.printf("Got: %s\n", message);
+                String message = sc.nextLine();
+                StringBuilder theMessage = new StringBuilder();
+                theMessage.append(message);
+                theMessage.reverse();
+                System.out.printf("Got: %s\n", theMessage);
                 if ("bye".equalsIgnoreCase(message)) {
                     System.out.print("Bye-bye!\n");
                     return;
                 }
+                pw.write(message);
+                pw.write(System.lineSeparator());
+                pw.flush();
             }
-        }
-        catch (NoSuchElementException e) {
+
+        } catch (NoSuchElementException e) {
             System.out.println("Client has dropped the connection!");
         }
     }

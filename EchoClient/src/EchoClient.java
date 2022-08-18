@@ -18,7 +18,7 @@ public class EchoClient {
         return new EchoClient(localhost, port);
     }
     public void run() {
-        System.out.print("Write 'bye' to exit\n\n\n");
+        System.out.print("Write \"bye\" to exit\n\n");
 
         try(Socket socket = new Socket(host, port)){
             Scanner scanner = new Scanner(System.in, "UTF-8");
