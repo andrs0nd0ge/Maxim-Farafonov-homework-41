@@ -17,6 +17,7 @@ public class EchoClient {
         String localhost = "127.0.0.1";
         return new EchoClient(localhost, port);
     }
+
     public void run() {
         System.out.print("Write \"bye\" to exit\n\n");
 
@@ -26,14 +27,19 @@ public class EchoClient {
             try(PrintWriter writer = new PrintWriter(socket.getOutputStream())) {
                 while (true) {
                     String message = scanner.nextLine();
+                    if ("bye".equalsIgnoreCase(message)) {
+                        System.out.print("Bye-bye!\n");
+                        return;
+                    }
+                    StringBuilder theMessage = new StringBuilder();
+                    theMessage.append(message);
+                    theMessage.reverse();
+                    System.out.printf("Got: %s\n", theMessage);
                     writer.write(message);
                     writer.write(System.lineSeparator());
 
                     writer.flush();
 
-                    if ("bye".equalsIgnoreCase(message)) {
-                        return;
-                    }
                 }
             }
         }

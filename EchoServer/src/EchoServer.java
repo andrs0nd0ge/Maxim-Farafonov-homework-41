@@ -5,7 +5,6 @@ import java.util.NoSuchElementException;
 import java.util.Scanner;
 
 public class EchoServer {
-
     private final int port;
 
     private EchoServer(int port) {
@@ -34,12 +33,7 @@ public class EchoServer {
         try (Scanner sc = new Scanner(isr); PrintWriter pw = new PrintWriter(socket.getOutputStream())) {
             while (true) {
                 String message = sc.nextLine();
-                StringBuilder theMessage = new StringBuilder();
-                theMessage.append(message);
-                theMessage.reverse();
-                System.out.printf("Got: %s\n", theMessage);
                 if ("bye".equalsIgnoreCase(message)) {
-                    System.out.print("Bye-bye!\n");
                     return;
                 }
                 pw.write(message);
