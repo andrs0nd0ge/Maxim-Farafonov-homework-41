@@ -22,24 +22,15 @@ public class EchoClient {
         System.out.print("Write \"bye\" to exit\n\n");
 
         try(Socket socket = new Socket(host, port)){
-            Scanner scanner = new Scanner(System.in, "UTF-8");
+            Scanner farewell = new Scanner(System.in, "UTF-8");
 
-            try(PrintWriter writer = new PrintWriter(socket.getOutputStream())) {
+            try(PrintWriter ignored = new PrintWriter(socket.getOutputStream())) {
                 while (true) {
-                    String message = scanner.nextLine();
+                    String message = farewell.nextLine();
                     if ("bye".equalsIgnoreCase(message)) {
                         System.out.print("Bye-bye!\n");
                         return;
                     }
-                    StringBuilder theMessage = new StringBuilder();
-                    theMessage.append(message);
-                    theMessage.reverse();
-                    System.out.printf("Got: %s\n", theMessage);
-                    writer.write(message);
-                    writer.write(System.lineSeparator());
-
-                    writer.flush();
-
                 }
             }
         }
